@@ -2,9 +2,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-require('dotenv').config();
-require('./configs/mongoose-config');
 const cors = require('cors');
+require('./configs/mongoose-config');
 
 const apiRouter = require('./routes/api');
 

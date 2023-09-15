@@ -11,11 +11,11 @@ function validationObject(req, res, next){
   return next();
 }
 
-const [form]Validation = [
-  body('[fieldName]', '/*Base Error Msg*/').trim().escape(),
+const todoValidation = [
+  body('title', 'Empty Title').trim().escape(),
   validationObject,
 ];
 
 module.exports={
-  [form]Validation,
+  todoValidation,
 };

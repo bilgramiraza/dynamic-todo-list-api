@@ -2,9 +2,9 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const todoSchema = new Schema({
-  id: String,
-  title: String,
-  status: Boolean,
+  id: { type:String, required:true },
+  title: { type:String, required:true },
+  status: { type:Boolean, default:false, required:true },
 },{ timestamps: true });
 
 todoSchema.virtual('').get(() => {

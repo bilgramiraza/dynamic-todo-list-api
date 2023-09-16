@@ -12,7 +12,7 @@ function validationObject(req, res, next){
 }
 
 const todoValidation = [
-  body('title', 'Empty Title').trim().escape(),
+  body('title', 'Empty Title').trim().isLength({ min:1 }).escape(),
   validationObject,
 ];
 

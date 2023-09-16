@@ -10,8 +10,9 @@ router.get('/:id', todoController.getTodoById);
 
 router.post('/', todoValidation, todoController.addTodo);
 
-router.post('/:id', todoController.toggleTodoStatus);
-router.patch('/:id', todoValidation, todoController.ModifyTodo);
+router.patch('/:id', todoController.toggleTodoStatus);
+
+router.put('/:id', todoValidation, todoController.modifyTodo);
 
 router.delete('/:id', todoController.deleteTodo);
 

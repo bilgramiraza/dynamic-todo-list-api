@@ -2,7 +2,6 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
 const todoSchema = new Schema({
-  id: { type:String, required:true },
   title: { type:String, required:true },
   status: { type:Boolean, default:false, required:true },
 },{ timestamps: true });

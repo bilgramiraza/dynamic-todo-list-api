@@ -1,27 +1,56 @@
 const Todo = require('../models/todo');
 
-const getAllTodos= (req, res, next) => {
-  res.send('NOT IMPLEMENTED: getAlltodo Route');
+const getAllTodos= async (req, res) => {
+  try{
+    const todos = await Todo
+      .find({})
+      .sort({ createdAt:'descending' })
+      .exec();
+    const statusCode = todos.length?200:204;
+    return res.status(statusCode).json(todos);
+  }catch(err){
+    return res.status(500).json(err);
+  }
 };
 
-const getTodoById= (req, res, next) => {
-  res.send('NOT IMPLEMENTED: getTodoById Route');
+const getTodoById= (req, res) => {
+  try{
+
+  }catch(err){
+    return res.status(500).json(err);
+  }
 };
 
-const addTodo= (req, res, next) => {
-  res.send('NOT IMPLEMENTED: addTodo Route');
+const addTodo= (req, res) => {
+  try{
+
+  }catch(err){
+    return res.status(500).json(err);
+  }
 };
 
-const toggleTodoStatus= (req, res, next) => {
-  res.send('NOT IMPLEMENTED: toggleTodoStatus Route');
+const toggleTodoStatus= (req, res) => {
+  try{
+
+  }catch(err){
+    return res.status(500).json(err);
+  }
 };
 
-const modifyTodo= (req, res, next) => {
-  res.send('NOT IMPLEMENTED: modifyTodo Route');
+const modifyTodo= (req, res) => {
+  try{
+
+  }catch(err){
+    return res.status(500).json(err);
+  }
 };
 
-const deleteTodo= (req, res, next) => {
-  res.send('NOT IMPLEMENTED: deleteTodo Route');
+const deleteTodo= (req, res) => {
+  try{
+
+  }catch(err){
+    return res.status(500).json(err);
+  }
 };
 
 module.exports = {

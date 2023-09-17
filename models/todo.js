@@ -6,7 +6,7 @@ const todoSchema = new Schema({
   status: { type:Boolean, default:false, required:true },
 },{ timestamps: true });
 
-todoSchema.virtual('').get(() => {
-});
+// todoSchema.virtual('').get(() => {
+// });
 
 module.exports = mongoose.model('todo', todoSchema);

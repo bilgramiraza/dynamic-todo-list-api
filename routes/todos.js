@@ -2,11 +2,11 @@ const express = require('express');
 const router = express.Router();
 
 const todoController = require('../controllers/todoController');
-const { todoValidation } = require('../middlewares/validation');
+const { todoValidation, todoIdValidation } = require('../middlewares/validation');
 
 /*TODOS API Routes*/
 router.get('/', todoController.getAllTodos);
-router.get('/:id', todoController.getTodoById);
+router.get('/:todoId',todoIdValidation, todoController.getTodoById);
 
 router.post('/', todoValidation, todoController.addTodo);
 

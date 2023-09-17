@@ -1,4 +1,5 @@
-const { body, validationResult } = require('express-validator');
+const { body, validationResult, param } = require('express-validator');
+const mongoose = require('mongoose');
 
 function validationObject(req, res, next){
   //Create an ErrorHandling Object in the format of 
@@ -16,6 +17,17 @@ const todoValidation = [
   validationObject,
 ];
 
+const todoIdCheck = (value) => {
+  if(!mongoose.Types.ObjectId.isValid(value)) throw new Error('Invalid Id');
+  return true;
+};
+
+const todoIdValidation = [
+  param('todoId', 'Invalid Id').trim().escape().custom(todoIdCheck),
+  validationObject,
+];
+
 module.exports={
   todoValidation,
+  todoIdValidation,
 };

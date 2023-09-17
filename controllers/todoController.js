@@ -1,4 +1,5 @@
 const Todo = require('../models/todo');
+const mongoose = require('mongoose');
 
 const getAllTodos= async (req, res) => {
   try{
@@ -13,9 +14,15 @@ const getAllTodos= async (req, res) => {
   }
 };
 
-const getTodoById= (req, res) => {
+const getTodoById= async (req, res) => {
   try{
+    if(req.errorObject) return res.status(204).json();
+    
+    const todo = await Todo.findById(req.params.todoId).exec();
 
+    if(!todo) return res.status(204).json();
+
+    return res.status(200).json(todo); 
   }catch(err){
     return res.status(500).json(err);
   }

@@ -1,5 +1,13 @@
 const Todo = require('../models/todo');
 
+const formatTodo = (todo)=>{
+  return {
+    id:todo._id,
+    title:todo.title,
+    status:todo.status 
+  };
+};
+
 const getAllTodos= async (req, res) => {
   try{
     const todos = await Todo
@@ -8,11 +16,7 @@ const getAllTodos= async (req, res) => {
       .sort({ createdAt:'descending' })
       .exec();
     const statusCode = todos.length?200:204;
-    const formattedTodos = todos.map(todo => ({ 
-      id:todo._id,
-      title:todo.title,
-      status:todo.status 
-    }));
+    const formattedTodos = todos.map(todo => formatTodo(todo));
     return res.status(statusCode).json(formattedTodos);
   }catch(err){
     return res.status(500).json(err);
@@ -28,11 +32,7 @@ const getTodoById= async (req, res) => {
 
     if(!todo) return res.status(204).json();
 
-    const formattedTodo = { 
-      id:todo._id,
-      title:todo.title,
-      status:todo.status 
-    };
+    const formattedTodo = formatTodo(todo);
     return res.status(200).json(formattedTodo); 
   }catch(err){
     return res.status(500).json(err);
@@ -61,11 +61,7 @@ const toggleTodoStatus= async (req, res) => {
 
     await todo.save();
 
-    const formattedTodo = { 
-      id:todo._id,
-      title:todo.title,
-      status:todo.status 
-    };
+    const formattedTodo = formatTodo(todo);
 
     return res.status(200).json({ message:'Todo Status Toggled', todo:formattedTodo }); 
   }catch(err){
@@ -83,11 +79,7 @@ const modifyTodo= async (req, res) => {
 
     await todo.save();
 
-    const formattedTodo = { 
-      id:todo._id,
-      title:todo.title,
-      status:todo.status 
-    };
+    const formattedTodo = formatTodo(todo);
 
     return res.status(200).json({ message:'Todo Title Modified', todo:formattedTodo }); 
   }catch(err){
@@ -101,11 +93,7 @@ const deleteTodo= async(req, res) => {
 
     if(deletedTodo === null)  return res.status(204).json();
 
-    const formattedTodo = { 
-      id:deletedTodo._id,
-      title:deletedTodo.title,
-      status:deletedTodo.status 
-    };
+    const formattedTodo = formatTodo(deletedTodo);
 
     return res.status(200).json(formattedTodo);
   }catch(err){

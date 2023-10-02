@@ -95,9 +95,19 @@ const modifyTodo= async (req, res) => {
   }
 };
 
-const deleteTodo= (req, res) => {
+const deleteTodo= async(req, res) => {
   try{
+    const deletedTodo = await Todo.findByIdAndDelete(req.params.todoId);
 
+    if(deletedTodo === null)  return res.status(204).json();
+
+    const formattedTodo = { 
+      id:deletedTodo._id,
+      title:deletedTodo.title,
+      status:deletedTodo.status 
+    };
+
+    return res.status(200).json(formattedTodo);
   }catch(err){
     return res.status(500).json(err);
   }

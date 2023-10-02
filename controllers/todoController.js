@@ -21,8 +21,6 @@ const getAllTodos= async (req, res) => {
 
 const getTodoById= async (req, res) => {
   try{
-    if(req.errorObject) return res.status(204).json();
-    
     const todo = await Todo
       .findById(req.params.todoId)
       .select('title status')
@@ -42,7 +40,6 @@ const getTodoById= async (req, res) => {
 };
 
 const addTodo= async (req, res) => {
-  if(req.errorObject) return res.status(400).json({ message:req.errorObject });
   try{
     const newTodo = new Todo({
       title:req.body.title,
@@ -54,9 +51,23 @@ const addTodo= async (req, res) => {
   }
 };
 
-const toggleTodoStatus= (req, res) => {
+const toggleTodoStatus= async (req, res) => {
   try{
+    const todo = await Todo.findById(req.params.todoId).exec();
 
+    if(todo === null) return res.status(204).json();
+
+    todo.status = !todo.status;
+
+    await todo.save();
+
+    const formattedTodo = { 
+      id:todo._id,
+      title:todo.title,
+      status:todo.status 
+    };
+
+    return res.status(200).json({ message:'Todo Status Toggled', todo:formattedTodo }); 
   }catch(err){
     return res.status(500).json(err);
   }

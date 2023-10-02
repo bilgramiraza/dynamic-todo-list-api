@@ -73,9 +73,23 @@ const toggleTodoStatus= async (req, res) => {
   }
 };
 
-const modifyTodo= (req, res) => {
+const modifyTodo= async (req, res) => {
   try{
+    const todo = await Todo.findById(req.params.todoId).exec();
 
+    if(todo === null) return res.status(204).json();
+
+    todo.title= req.body.title;//Modify This when we need to modify more than a single property
+
+    await todo.save();
+
+    const formattedTodo = { 
+      id:todo._id,
+      title:todo.title,
+      status:todo.status 
+    };
+
+    return res.status(200).json({ message:'Todo Title Modified', todo:formattedTodo }); 
   }catch(err){
     return res.status(500).json(err);
   }

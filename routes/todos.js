@@ -2,18 +2,18 @@ const express = require('express');
 const router = express.Router();
 
 const todoController = require('../controllers/todoController');
-const { todoValidation, todoIdValidation } = require('../middlewares/validation');
+const { todoValidation, todoIdValidation, handleValidationErrors } = require('../middlewares/validation');
 
 /*TODOS API Routes*/
 router.get('/', todoController.getAllTodos);
-router.get('/:todoId',todoIdValidation, todoController.getTodoById);
+router.get('/:todoId',todoIdValidation, handleValidationErrors, todoController.getTodoById);
 
-router.post('/', todoValidation, todoController.addTodo);
+router.post('/', todoValidation, handleValidationErrors, todoController.addTodo);
 
-router.patch('/:id', todoController.toggleTodoStatus);
+router.patch('/:todoId', todoIdValidation, handleValidationErrors, todoController.toggleTodoStatus);
 
-router.put('/:id', todoValidation, todoController.modifyTodo);
+router.put('/:todoId', todoValidation, handleValidationErrors, todoController.modifyTodo);
 
-router.delete('/:id', todoController.deleteTodo);
+router.delete('/:todoId', todoIdValidation, handleValidationErrors, todoController.deleteTodo);
 
 module.exports = router;

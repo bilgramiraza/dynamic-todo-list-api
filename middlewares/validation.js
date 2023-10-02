@@ -1,20 +1,16 @@
 const { body, validationResult, param } = require('express-validator');
 const mongoose = require('mongoose');
 
-function validationObject(req, res, next){
-  //Create an ErrorHandling Object in the format of 
-  //{[param]:[msg]}
-  //Where 'params' is the input name which failed 
-  //validation and msg is the Error Message generated for it
-
+//Middleware to handle validation errors and send a 400 response if validation fails.
+//It formats validation errors and sends them as a JSON response.
+function handleValidationErrors (req, res, next){
   const errorObject = validationResult(req).formatWith(({msg})=>msg).mapped();
-  if(Object.keys(errorObject).length>0) req.errorObject = errorObject;
+  if(Object.keys(errorObject).length>0) return res.status(400).json(errorObject);
   return next();
 }
 
 const todoValidation = [
   body('title', 'Empty Title').trim().isLength({ min:1 }).escape(),
-  validationObject,
 ];
 
 const todoIdCheck = (value) => {
@@ -24,10 +20,10 @@ const todoIdCheck = (value) => {
 
 const todoIdValidation = [
   param('todoId', 'Invalid Id').trim().escape().custom(todoIdCheck),
-  validationObject,
 ];
 
 module.exports={
   todoValidation,
   todoIdValidation,
+  handleValidationErrors,
 };

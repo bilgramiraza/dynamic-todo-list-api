@@ -45,7 +45,10 @@ const addTodo= async (req, res) => {
       title:req.body.title,
     });
     await newTodo.save();
-    return res.status(201).json({ message:'Todo Created Successfully' });
+
+    const formattedTodo = formatTodo(newTodo);
+
+    return res.status(201).json({ message:'Todo Created Successfully' , todo:formattedTodo});
   }catch(err){
     return res.status(500).json(err);
   }

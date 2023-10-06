@@ -98,7 +98,7 @@ const deleteTodo= async(req, res) => {
 
     const formattedTodo = formatTodo(deletedTodo);
 
-    return res.status(200).json(formattedTodo);
+    return res.status(200).json({ message:'Todo Deleted', todo:formattedTodo });
   }catch(err){
     return res.status(500).json(err);
   }

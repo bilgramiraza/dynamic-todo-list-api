@@ -12,7 +12,7 @@ router.post('/', todoValidation, handleValidationErrors, todoController.addTodo)
 
 router.patch('/:todoId', todoIdValidation, handleValidationErrors, todoController.toggleTodoStatus);
 
-router.put('/:todoId', todoValidation, handleValidationErrors, todoController.modifyTodo);
+router.put('/:todoId', todoIdValidation, todoValidation, handleValidationErrors, todoController.modifyTodo);
 
 router.delete('/:todoId', todoIdValidation, handleValidationErrors, todoController.deleteTodo);
 

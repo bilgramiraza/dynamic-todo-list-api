@@ -1,5 +1,6 @@
 const { body, validationResult, param } = require('express-validator');
 const mongoose = require('mongoose');
+const passport = require('passport');
 
 //Middleware to handle validation errors and send a 400 response if validation fails.
 //It formats validation errors and sends them as a JSON response.
@@ -8,6 +9,10 @@ function handleValidationErrors (req, res, next){
   if(Object.keys(errorObject).length>0) return res.status(400).json(errorObject);
   return next();
 }
+
+const authMiddleware = [
+  passport.authenticate('jwt', { session:false }),
+];
 
 const todoValidation = [
   body('title', 'Empty Title').trim().isLength({ min:1 }).escape(),
@@ -26,4 +31,5 @@ module.exports={
   todoValidation,
   todoIdValidation,
   handleValidationErrors,
+  authMiddleware,
 };

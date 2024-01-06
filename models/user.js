@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema({
@@ -36,6 +37,16 @@ userSchema.pre('findOneAndUpdate',async function(next){
 
 userSchema.methods.comparePassword = async function(inputPassword){
   return await bcrypt.compare(inputPassword,this.password);
-}
+};
+
+userSchema.methods.genAuthToken = function(){
+  const opts = {
+    expiresIn: "1d",
+    issuer: "dynamic-todo-list",
+  };
+  const token = jwt.sign({sub:{ id:this._id, username:this.username }},process.env.JWT_SECRET,opts);
+  return token;
+};
+
 
 module.exports = mongoose.model('user', userSchema);

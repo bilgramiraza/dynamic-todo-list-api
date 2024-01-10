@@ -2,7 +2,14 @@ const express = require('express');
 const router = express.Router();
 
 const todoController = require('../controllers/todoController');
-const { todoValidation, todoIdValidation, handleValidationErrors } = require('../middlewares/validation');
+const { 
+  todoValidation, 
+  todoIdValidation, 
+  handleValidationErrors, 
+  authMiddleware,
+} = require('../middlewares/validation');
+
+router.use(authMiddleware);
 
 /*TODOS API Routes*/
 router.get('/', todoController.getAllTodos);

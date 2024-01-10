@@ -11,7 +11,7 @@ const formatTodo = (todo)=>{
 const getAllTodos= async (req, res) => {
   try{
     const todos = await Todo
-      .find({})
+      .find({ user:req.user.id })
       .select('title status')
       .sort({ createdAt:'descending' })
       .exec();
@@ -27,10 +27,10 @@ const getTodoById= async (req, res) => {
   try{
     const todo = await Todo
       .findById(req.params.todoId)
-      .select('title status')
+      .select('title status user')
       .exec();
 
-    if(!todo) return res.status(204).json();
+    if(!todo || todo.user !== req.user.id ) return res.status(204).json();
 
     const formattedTodo = formatTodo(todo);
     return res.status(200).json(formattedTodo); 
@@ -43,6 +43,7 @@ const addTodo= async (req, res) => {
   try{
     const newTodo = new Todo({
       title:req.body.title,
+      user:req.user.id,
     });
     await newTodo.save();
 
@@ -58,7 +59,7 @@ const toggleTodoStatus= async (req, res) => {
   try{
     const todo = await Todo.findById(req.params.todoId).exec();
 
-    if(todo === null) return res.status(204).json();
+    if(todo === null || todo.user !== req.user.id) return res.status(204).json();
 
     todo.status = !todo.status;
 
@@ -76,7 +77,7 @@ const modifyTodo= async (req, res) => {
   try{
     const todo = await Todo.findById(req.params.todoId).exec();
 
-    if(todo === null) return res.status(204).json();
+    if(todo === null || todo.user !== req.user.id) return res.status(204).json();
 
     todo.title= req.body.title;//Modify This when we need to modify more than a single property
 
@@ -94,7 +95,7 @@ const deleteTodo= async(req, res) => {
   try{
     const deletedTodo = await Todo.findByIdAndDelete(req.params.todoId);
 
-    if(deletedTodo === null)  return res.status(204).json();
+    if(deletedTodo === null || deletedTodo.user !== req.user.id)  return res.status(204).json();
 
     const formattedTodo = formatTodo(deletedTodo);
 

@@ -1,4 +1,5 @@
 const User = require('../models/user'); 
+const Todo = require('../models/todo');
 
 const login = async (req, res) =>{
   const { username, password } = req.body;
@@ -43,8 +44,8 @@ const currentUser = async (req, res)=>{
 
 const modifyUser = async (req, res)=>{
   try{
-    const user = new User(req.body);
-    await User.findByIdAndUpdate(req.user.id, user, { new:true });
+    const { username } = req.body;
+    await User.findByIdAndUpdate(req.user.id, { username }, { new:true });
     return res.status(201).json({ message:'User Info Updated' });
   }catch(err){
     return res.status(500).send(err);
@@ -55,6 +56,7 @@ const deleteUser = async (req, res)=>{
   try{
     const deletedUser = await User.findByIdAndDelete(req.user.id);
     if(!deletedUser)  res.status(404).send({ message:'User Not Found' });
+    await Todo.deleteMany({ user:deletedUser._id });
     return res.status(204).json({ message:'User Deletion Successful' });
   }catch(err){
     return res.status(500).send(err);

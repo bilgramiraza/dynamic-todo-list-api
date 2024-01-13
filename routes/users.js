@@ -7,6 +7,7 @@ const {
   loginValidation, 
   registerValidation, 
   modifyUserValidation, 
+  passwordResetValidation,
   handleValidationErrors,
 } = require('../middlewares/validation');
 
@@ -16,5 +17,7 @@ router.post('/register', registerValidation, handleValidationErrors, userControl
 router.get('/me', authMiddleware, handleValidationErrors, userController.currentUser);
 router.post('/me', authMiddleware, modifyUserValidation, handleValidationErrors, userController.modifyUser);
 router.delete('/me', authMiddleware, handleValidationErrors, userController.deleteUser);
+
+router.post('/me/password', authMiddleware, passwordResetValidation, handleValidationErrors, userController.passwordReset);
 
 module.exports = router;

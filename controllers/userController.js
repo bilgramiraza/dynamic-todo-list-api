@@ -63,10 +63,36 @@ const deleteUser = async (req, res)=>{
   }
 };
 
+const passwordReset = async (req, res)=>{
+  const { id:userId } = req.user;
+  const { oldPassword, newPassword } = req.body;
+
+  if(!oldPassword.localeCompare(newPassword)) 
+    return res.status(400).send({ message:'Old and New Passwords cannot be identical' });
+
+  try{
+    const foundUser = await User.findById(userId).exec();
+    if(!foundUser)
+      return res.status(404).send({ message:'User not found' });
+
+    const comparePassword = await foundUser.comparePassword(oldPassword)
+    if(!comparePassword)
+      return res.status(401).send({ message:'Invalid Old Password' });
+
+    foundUser.password = newPassword;
+    foundUser.save();
+
+    return res.status(204).json({ message:'Password Update Successful' });
+  }catch(err){
+    return res.status(500).send(err);
+  }
+};
+
 module.exports = {
   login,
   register,
   currentUser,
   modifyUser,
   deleteUser,
+  passwordReset,
 };

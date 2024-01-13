@@ -44,6 +44,11 @@ const modifyUserValidation = [
   body('username', 'Username Cannot be Blank').trim().isLength({ min:1 }).escape().custom(validateUsername),
 ];
 
+const passwordResetValidation = [
+  body('oldPassword', 'Old Password Cannot be Blank').trim().isLength({ min:8 }).escape(),
+  body('newPassword', 'New Password Cannot be Blank').trim().isLength({ min:8 }).escape(),
+];
+
 const todoValidation = [
   body('title', 'Empty Title').trim().isLength({ min:1 }).escape(),
 ];
@@ -65,4 +70,5 @@ module.exports={
   loginValidation,
   registerValidation,
   modifyUserValidation,
+  passwordResetValidation,
 };

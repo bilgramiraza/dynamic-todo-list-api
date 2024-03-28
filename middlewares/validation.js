@@ -31,13 +31,13 @@ const validateUsername = async (value, { req })=>{
 
 const loginValidation = [
   body('username', 'Username Cannot be Blank').trim().isLength({ min:1 }).escape(),
-  body('password', 'Password Cannot be Blank').trim().isLength({ min:8 }).escape(),
+  body('password', 'Password Cannot be Blank').trim().isLength({ min:1 }).isLength({ min:8 }).withMessage('Password Too Short').escape(),
 ];
 
 const registerValidation = [
   body('email', 'Email Cannot be Blank').trim().isEmail().withMessage('Invalid Email').escape().custom(uniqueEmailCheck),
   body('username', 'Username Cannot be Blank').trim().isLength({ min:1 }).escape().custom(validateUsername),
-  body('password', 'Password Cannot be Blank').trim().isLength({ min:8 }).escape(),
+  body('password', 'Password Cannot be Blank').trim().isLength({ min:1 }).isLength({ min:8 }).withMessage('Password Too Short').escape(),
 ];
 
 const modifyUserValidation = [

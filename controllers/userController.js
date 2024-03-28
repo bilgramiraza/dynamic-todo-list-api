@@ -13,7 +13,7 @@ const login = async (req, res) =>{
       return res.status(401).send({ message:'Invalid Password' });
 
     const token = foundUser.genAuthToken();
-    return res.status(200).json({ message:'User Login Successful', token });
+    return res.status(200).json({ message:'User Login Successful', token, username:foundUser.username });
   }catch(err){
     return res.status(500).send(err);
   }
